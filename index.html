@@ -2,81 +2,113 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>لعبة الربح</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لعبة الهامستر</title>
 
 <style>
 body {
-  background: radial-gradient(circle, #1a1a1a, #000);
-  color: white;
-  text-align: center;
-  font-family: Arial;
+    margin: 0;
+    font-family: Arial;
+    background: radial-gradient(circle, #111, #000);
+    color: white;
+    text-align: center;
 }
 
-h1 {
-  font-size: 30px;
+.container {
+    margin-top: 60px;
 }
 
-#money {
-  font-size: 40px;
-  margin: 20px;
+.balance {
+    font-size: 28px;
+}
+
+.coins {
+    font-size: 40px;
+    margin: 10px 0;
 }
 
 button {
-  padding: 20px 40px;
-  font-size: 20px;
-  border: none;
-  border-radius: 15px;
-  background: #00c853;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #00c853, #00e676);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px #00e676;
 }
 
 button:active {
-  transform: scale(0.9);
+    transform: scale(0.95);
 }
 
 .plus {
-  position: absolute;
-  color: yellow;
-  font-size: 20px;
-  animation: float 1s forwards;
+    position: absolute;
+    color: gold;
+    font-size: 20px;
+    animation: float 1s ease-out forwards;
 }
 
 @keyframes float {
-  0% {opacity: 1; transform: translateY(0);}
-  100% {opacity: 0; transform: translateY(-50px);}
+    0% {opacity:1; transform: translateY(0);}
+    100% {opacity:0; transform: translateY(-60px);}
+}
+
+.section {
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #333;
 }
 </style>
-
 </head>
 
 <body>
 
-<h1>💰 رصيدك</h1>
-<div id="money">0</div>
+<div class="container">
+    <div class="balance">💰 رصيدك</div>
+    <div id="coins" class="coins">0</div>
 
-<button onclick="clickMoney()">اضغط 🐹</button>
+    <button onclick="clickCoin(event)">اضغط 🐹</button>
+</div>
+
+<div class="section">
+    <h2>🛒 المتجر</h2>
+    <button onclick="buy()">شراء مضاعف (50)</button>
+</div>
+
+<div class="section">
+    <h2>👥 دعوة الأصدقاء</h2>
+    <p>قريباً...</p>
+</div>
 
 <script>
-let money = 0;
+let coins = 0;
+let power = 1;
 
-function clickMoney() {
-  money += 10;
-  document.getElementById("money").innerText = money;
+function clickCoin(e) {
+    coins += power;
+    document.getElementById("coins").innerText = coins;
 
-  let plus = document.createElement("div");
-  plus.innerText = "+10";
-  plus.className = "plus";
+    let plus = document.createElement("div");
+    plus.innerText = "+" + power;
+    plus.className = "plus";
 
-  plus.style.left = (window.innerWidth/2) + "px";
-  plus.style.top = "300px";
+    plus.style.left = e.clientX + "px";
+    plus.style.top = e.clientY + "px";
 
-  document.body.appendChild(plus);
+    document.body.appendChild(plus);
 
-  setTimeout(() => {
-    plus.remove();
-  }, 1000);
+    setTimeout(() => plus.remove(), 1000);
+}
+
+function buy() {
+    if (coins >= 50) {
+        coins -= 50;
+        power++;
+        alert("تم شراء مضاعف!");
+    } else {
+        alert("رصيد غير كافي");
+    }
 }
 </script>
 
