@@ -2,133 +2,81 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Bot</title>
+<title>لعبة الربح</title>
 
 <style>
 body {
-  background: black;
+  background: radial-gradient(circle, #1a1a1a, #000);
   color: white;
   text-align: center;
-  font-size: 22px;
   font-family: Arial;
 }
 
-button {
-  padding: 10px;
-  margin: 10px;
-  font-size: 16px;
+h1 {
+  font-size: 30px;
 }
 
-input {
-  width: 80%;
-  padding: 5px;
+#money {
+  font-size: 40px;
+  margin: 20px;
+}
+
+button {
+  padding: 20px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 15px;
+  background: #00c853;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+.plus {
+  position: absolute;
+  color: yellow;
+  font-size: 20px;
+  animation: float 1s forwards;
+}
+
+@keyframes float {
+  0% {opacity: 1; transform: translateY(0);}
+  100% {opacity: 0; transform: translateY(-50px);}
 }
 </style>
+
 </head>
 
 <body>
 
-<h1>💰 رصيدك: <span id="coins">0</span></h1>
-<h3>⚡ الطاقة: <span id="energy">10</span></h3>
+<h1>💰 رصيدك</h1>
+<div id="money">0</div>
 
-<button onclick="tap()">اضغط 🐹</button>
-
-<hr>
-
-<h2>🛒 المتجر</h2>
-<button onclick="buyUpgrade()">شراء مضاعف (50 💰)</button>
-<p>المضاعف: x<span id="multiplier">1</span></p>
-
-<hr>
-
-<h2>👥 دعوة الأصدقاء</h2>
-<p>رابطك:</p>
-<input id="refLink" readonly>
-<button onclick="copyLink()">نسخ الرابط</button>
-
-<hr>
-
-<h2>📋 المهام</h2>
-
-<a href="https://t.me/yourchannel" target="_blank">
-  <button>اشترك في القناة 📢</button>
-</a>
-
-<button onclick="checkTask()">تحقق</button>
+<button onclick="clickMoney()">اضغط 🐹</button>
 
 <script>
-let coins = parseInt(localStorage.getItem("coins")) || 0;
-let energy = parseInt(localStorage.getItem("energy")) || 10;
-let multiplier = parseInt(localStorage.getItem("multiplier")) || 1;
+let money = 0;
 
-updateUI();
+function clickMoney() {
+  money += 10;
+  document.getElementById("money").innerText = money;
 
-function updateUI() {
-  document.getElementById("coins").innerText = coins;
-  document.getElementById("energy").innerText = energy;
-  document.getElementById("multiplier").innerText = multiplier;
+  let plus = document.createElement("div");
+  plus.innerText = "+10";
+  plus.className = "plus";
 
-  localStorage.setItem("coins", coins);
-  localStorage.setItem("energy", energy);
-  localStorage.setItem("multiplier", multiplier);
-}
+  plus.style.left = (window.innerWidth/2) + "px";
+  plus.style.top = "300px";
 
-function tap() {
-  if (energy > 0) {
-    coins += multiplier;
-    energy--;
-    updateUI();
-  } else {
-    alert("⚡ لا يوجد طاقة!");
-  }
-}
+  document.body.appendChild(plus);
 
-setInterval(() => {
-  if (energy < 10) {
-    energy++;
-    updateUI();
-  }
-}, 3000);
-
-function buyUpgrade() {
-  if (coins >= 50) {
-    coins -= 50;
-    multiplier++;
-    updateUI();
-  } else {
-    alert("❌ لا يوجد رصيد كافي");
-  }
-}
-
-let myId = Math.floor(Math.random() * 100000);
-let refLink = window.location.href + "?ref=" + myId;
-document.getElementById("refLink").value = refLink;
-
-function copyLink() {
-  navigator.clipboard.writeText(refLink);
-  alert("✅ تم نسخ الرابط");
-}
-
-let params = new URLSearchParams(window.location.search);
-let ref = params.get("ref");
-
-if (ref && !localStorage.getItem("joinedFromRef")) {
-  coins += 10;
-  localStorage.setItem("joinedFromRef", true);
-  updateUI();
-  alert("🎉 حصلت على 10 💰 من الدعوة!");
-}
-
-function checkTask() {
-  if (!localStorage.getItem("taskDone")) {
-    coins += 20;
-    localStorage.setItem("taskDone", true);
-    updateUI();
-    alert("✅ تم التحقق! حصلت على 20 💰");
-  } else {
-    alert("❌ أخذت المكافأة مسبقاً");
-  }
+  setTimeout(() => {
+    plus.remove();
+  }, 1000);
 }
 </script>
 
