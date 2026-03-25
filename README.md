@@ -1,2 +1,0 @@
-# mybot-
-crypto bot website
